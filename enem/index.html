@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIBRARY — Preparatório gratuito para o Enem</title>
+<meta name="description" content="LIBRARY: livro digital gratuito com resolução de questões, redações e revisão para o Enem. Vire as páginas e estude de graça.">
+<meta property="og:title" content="LIBRARY — Preparatório gratuito para o Enem">
+<meta property="og:description" content="Livro digital gratuito para estudar para o Enem: questões resolvidas, redação e revisão.">
+<meta property="og:type" content="website">
+<style>
+:root{--mesa:#151c1b;--capa:#1f4a45;--ouro:#e0b85c;--papel:#f8f4ea;--tinta:#22262b;--sel:#9a3b2e;--w:340px;--h:472px;--n:2}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#22302e,var(--mesa) 70%);color:var(--tinta);font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
+#src{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+body{display:grid;place-items:center;padding-bottom:70px}
+.book{position:relative;width:calc(var(--w)*var(--n));height:var(--h);perspective:2600px;touch-action:none;user-select:none;-webkit-user-select:none;transition:transform .8s cubic-bezier(.4,.1,.2,1)}
+.leaf{position:absolute;top:0;left:calc(var(--w)*(var(--n) - 1));width:var(--w);height:100%;transform-origin:left center;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--papel);overflow:hidden;padding:9% 9% 12%;font-size:calc(var(--w)*.036);line-height:1.5;box-shadow:0 2px 14px rgba(0,0,0,.35)}
+.face.front{border-radius:0 6px 6px 0}
+.face.back{transform:rotateY(180deg);border-radius:6px 0 0 6px}
+.face.front::after,.face.back::after{content:"";position:absolute;inset:0;pointer-events:none}
+.face.front::after{background:linear-gradient(90deg,rgba(0,0,0,.24),transparent 10%)}
+.face.back::after{background:linear-gradient(270deg,rgba(0,0,0,.24),transparent 10%)}
+.face h2{font-size:1.4em;line-height:1.2;margin:0 0 .6em;color:var(--sel)}
+.face p{margin:0 0 .7em}
+.face ul,.face ol{margin:0 0 .7em;padding-left:1.2em}
+.face li{margin-bottom:.35em}
+.face a{color:var(--tinta);text-decoration:underline dotted;cursor:pointer}
+.nota{border-left:3px solid var(--sel);padding:.3em .8em;background:rgba(154,59,46,.07);margin:0 0 .7em}
+.pg{position:absolute;bottom:5%;left:0;right:0;text-align:center;font-size:.8em;opacity:.55}
+.cover{background:var(--capa);color:var(--ouro);padding:0}
+.cover.front{inset:-6px -9px -6px 0}
+.cover.back{inset:-6px 0 -6px -9px}
+.foil{position:absolute;inset:7%;border:1px solid var(--ouro);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8%}
+.foil h1{font-size:2.6em;letter-spacing:.06em;margin:0 0 .4em;font-weight:700}
+.foil p{margin:.2em 0;font-size:1.05em;color:#f1dba4}
+.endp{background:#e9e1cc}
+.blank{background:var(--papel)}
+.lines{background-image:repeating-linear-gradient(transparent 0 calc(1.5em - 1px),rgba(34,38,43,.16) calc(1.5em - 1px) 1.5em);height:78%}
+.ui{position:fixed;left:0;right:0;bottom:12px;display:flex;justify-content:center;align-items:center;gap:14px;color:#cdd8d4;font-size:15px}
+.ui button{width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#e6efe9;font-size:24px;cursor:pointer}
+.ui button:disabled{opacity:.3;cursor:default}
+.ui button:focus-visible{outline:2px solid var(--ouro);outline-offset:2px}
+#ind{min-width:130px;text-align:center}
+@media (prefers-reduced-motion:reduce){.book,.leaf{transition-duration:.01s}}
+.voltar{position:fixed;top:0;left:0;z-index:50;padding:calc(env(safe-area-inset-top,0px) + 12px) 14px 12px;color:#cdd8d4;font-size:15px;text-decoration:none}
+.voltar:focus-visible{outline:2px solid var(--ouro)}
+</style>
+</head>
+<body>
+<a class="voltar" href="../">‹ Estante</a>
+
+<!-- CONTEÚDO DO LIVRO: cada <article class="face"> é uma página, em ordem.
+     Mantenha o total PAR (frente e verso de cada folha). Página 0 = capa. -->
+<main id="src">
+<article class="face cover nopg"><div class="foil"><h1>LIBRARY</h1><p>Preparatório completo para o Enem</p><p>Gratuito para todos os estudantes</p></div></article>
+
+<article class="face endp nopg"><h2>Como usar este livro</h2><p>Vire as páginas arrastando com o dedo. No computador, clique nas bordas ou use as setas do teclado.</p><p>Cada capítulo traz explicação e questões resolvidas. Tente resolver sozinho antes de ler a resolução.</p><p>Este livro é gratuito e fica aqui para quem precisar, inclusive nos próximos anos.</p></article>
+
+<article class="face"><h2>Sumário</h2><ul>
+<li><a href="#p3" data-go="3">Como é o Enem</a>, p. 3</li>
+<li><a href="#p4" data-go="4">Como funciona a nota</a>, p. 4</li>
+<li><a href="#p5" data-go="5">Redação: as 5 competências</a>, p. 5</li>
+<li><a href="#p6" data-go="6">Redação: proposta de intervenção</a>, p. 6</li>
+<li><a href="#p7" data-go="7">Matemática: questão resolvida</a>, p. 7</li>
+<li><a href="#p8" data-go="8">Natureza: questão resolvida</a>, p. 8</li>
+<li><a href="#p9" data-go="9">Próximos capítulos</a>, p. 9</li></ul></article>
+
+<article class="face"><h2>Como é o Enem</h2><p>A prova acontece em dois dias e tem 180 questões de múltipla escolha (5 alternativas), mais a redação.</p><ul>
+<li><b>1º dia:</b> Linguagens, Ciências Humanas e Redação.</li>
+<li><b>2º dia:</b> Ciências da Natureza e Matemática.</li>
+<li>45 questões por área.</li></ul>
+<p class="nota">Confira datas e regras no edital oficial do Inep.</p></article>
+
+<article class="face"><h2>Como funciona a nota</h2><p>O Enem usa a Teoria de Resposta ao Item (TRI): cada área tem nota própria, e a nota considera a dificuldade e a coerência das suas respostas.</p><ul>
+<li>Erro não tira ponto: marque uma alternativa em todas as questões.</li>
+<li>Acerte primeiro as questões fáceis; errá-las pesa mais.</li>
+<li>Leia o enunciado inteiro antes das alternativas.</li></ul></article>
+
+<article class="face"><h2>Redação: as 5 competências</h2><p>A redação vale de 0 a 1000. São cinco competências, de 0 a 200 pontos cada:</p><ol>
+<li>Domínio da norma culta da língua.</li>
+<li>Compreensão do tema e uso de repertório.</li>
+<li>Seleção e organização dos argumentos.</li>
+<li>Coesão: ligar as ideias com conectivos.</li>
+<li>Proposta de intervenção que respeite os direitos humanos.</li></ol></article>
+
+<article class="face"><h2>Proposta de intervenção</h2><p>Uma boa proposta tem cinco elementos: <b>agente</b>, <b>ação</b>, <b>meio</b>, <b>finalidade</b> e <b>detalhamento</b>.</p><p class="nota">Exemplo: O Ministério da Educação (agente) deve ampliar o acesso a bibliotecas públicas (ação), por meio de verbas e parcerias com escolas (meio), a fim de estimular a leitura (finalidade), com campanhas nas redes sociais (detalhamento).</p><p>Estrutura: introdução, dois desenvolvimentos e conclusão com a proposta.</p></article>
+
+<article class="face"><h2>Matemática: porcentagem</h2><p><b>Questão:</b> um produto custa R$ 80,00 e recebe 25% de desconto. Depois, o preço com desconto sofre um acréscimo de 10%. Qual é o preço final?</p><p><b>Resolução:</b> desconto de 25% é multiplicar por 0,75. Acréscimo de 10% é multiplicar por 1,10.</p><p>80 × 0,75 = 60<br>60 × 1,10 = 66</p><p class="nota">Resposta: R$ 66,00. Dica: trate porcentagem como multiplicador.</p></article>
+
+<article class="face"><h2>Natureza: velocidade média</h2><p><b>Questão:</b> um carro percorre 60 km a 60 km/h e mais 60 km a 30 km/h. Qual é a velocidade média no trajeto todo?</p><p><b>Resolução:</b> a velocidade média é a distância total dividida pelo tempo total.</p><p>Tempos: 60 ÷ 60 = 1 h e 60 ÷ 30 = 2 h.<br>Total: 120 km em 3 h, ou seja, 40 km/h.</p><p class="nota">Cuidado com a armadilha: a resposta não é a média simples (45 km/h).</p></article>
+
+<article class="face"><h2>Próximos capítulos</h2><p>Este livro continua crescendo. Estão a caminho:</p><ul>
+<li>Linguagens: interpretação de texto e gramática</li>
+<li>Ciências Humanas: história, geografia, filosofia e sociologia</li>
+<li>Ciências da Natureza: física, química e biologia</li>
+<li>Matemática: mais questões resolvidas</li>
+<li>Redações nota 1000 comentadas</li></ul></article>
+
+<article class="face"><h2>Anotações</h2><div class="lines"></div></article>
+
+<article class="face cover nopg"><div class="foil"><h1>LIBRARY</h1><p>Gratuito. Para todos.</p></div></article>
+</main>
+
+<div class="book" id="book" aria-label="Livro LIBRARY"></div>
+<nav class="ui" aria-label="Navegação do livro">
+<button id="prev" aria-label="Página anterior">‹</button><span id="ind" aria-live="polite"></span><button id="next" aria-label="Próxima página">›</button>
+</nav>
+
+<script>
+(()=>{
+const S=[...document.querySelectorAll('#src .face')],M=S.length;
+const book=document.getElementById('book'),ind=document.getElementById('ind'),bp=document.getElementById('prev'),bn=document.getElementById('next');
+const root=document.documentElement.style;
+let two=true,L=[],N=0,cur=0,W=340,drag=null;
+const mx=()=>two?N:N-1;
+
+function face(i,side){
+  const d=document.createElement('div'),n=S[i];
+  if(n){
+    d.className=n.className+' '+side;d.innerHTML=n.innerHTML;
+    if(!n.classList.contains('nopg'))d.insertAdjacentHTML('beforeend','<span class="pg">'+i+'</span>');
+  }else d.className='face blank '+side;
+  return d;
+}
+function build(){
+  const f=L.length?(two?Math.min(2*cur,M-1):cur):0;
+  two=innerWidth>=900;
+  W=Math.floor(Math.min((innerWidth-(two?80:28))/(two?2:1),(innerHeight-110)*.72,520));
+  root.setProperty('--w',W+'px');root.setProperty('--h',Math.round(W/.72)+'px');root.setProperty('--n',two?2:1);
+  book.innerHTML='';L=[];N=two?M/2:M;
+  for(let k=0;k<N;k++){
+    const e=document.createElement('div');e.className='leaf';
+    e.append(face(two?2*k:k,'front'),face(two?2*k+1:-1,'back'));
+    book.append(e);L.push(e);
+  }
+  cur=two?Math.ceil(f/2):f;
+  draw(0);
+}
+function draw(anim){
+  L.forEach((e,i)=>{
+    e.style.transition=anim?'':'none';
+    e.style.transform='rotateY('+(i<cur?-180:0)+'deg)';
+    e.style.zIndex=i<cur?i:N-i;
+  });
+  book.style.transform=two?'translateX('+(cur===0?-W/2:cur>=N?W/2:0)+'px)':'';
+  const f=two?Math.min(2*cur,M-1):cur;
+  ind.textContent=two?(cur===0?'Capa':cur>=N?'Contracapa':'Páginas '+(2*cur-1)+' e '+(2*cur)):(f===0?'Capa':f===M-1?'Contracapa':'Página '+f);
+  bp.disabled=cur<=0;bn.disabled=cur>=mx();
+}
+function go(t){
+  t=Math.max(0,Math.min(mx(),t));
+  if(t===cur)return;
+  const o=cur;cur=t;draw(1);
+  for(let i=Math.min(o,t);i<Math.max(o,t);i++)L[i].style.zIndex=N+5+(t>o?i:N-i);
+  setTimeout(()=>draw(1),850);
+}
+
+book.addEventListener('pointerdown',e=>{
+  if(e.target.closest('a'))return;
+  drag={x:e.clientX,y:e.clientY,d:0,p:0,t:Date.now()};
+  book.setPointerCapture(e.pointerId);
+});
+book.addEventListener('pointermove',e=>{
+  const g=drag;if(!g)return;
+  const dx=e.clientX-g.x;
+  if(!g.d){
+    if(Math.abs(dx)<8)return;
+    const d=dx<0?1:-1;
+    if((d>0&&cur>=mx())||(d<0&&cur<=0)){drag=null;return}
+    g.d=d;g.e=L[d>0?cur:cur-1];g.e.style.transition='none';g.e.style.zIndex=N+9;
+  }
+  g.p=Math.max(0,Math.min(1,-dx*g.d/(two?W*1.2:W*.8)));
+  g.e.style.transform='rotateY('+(-180*(g.d>0?g.p:1-g.p))+'deg)';
+});
+function end(e){
+  const g=drag;drag=null;if(!g)return;
+  if(!g.d){
+    if(Math.abs(e.clientX-g.x)<8&&Math.abs(e.clientY-g.y)<8){
+      const r=book.getBoundingClientRect();
+      go((e.clientX-r.left)/r.width>.5?cur+1:cur-1);
+    }
+    return;
+  }
+  if(g.p>.3||(Date.now()-g.t<350&&g.p>.12))go(cur+g.d);else draw(1);
+}
+book.addEventListener('pointerup',end);
+book.addEventListener('pointercancel',()=>{if(drag&&drag.d)draw(1);drag=null});
+bp.onclick=()=>go(cur-1);bn.onclick=()=>go(cur+1);
+addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1)});
+document.addEventListener('click',e=>{
+  const a=e.target.closest('[data-go]');
+  if(a){e.preventDefault();const f=+a.dataset.go;go(two?Math.ceil(f/2):f)}
+});
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(build,150)});
+build();
+})();
+</script>
+</body>
+</html>
