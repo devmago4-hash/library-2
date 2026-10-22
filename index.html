@@ -2,102 +2,256 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LIBRARY — Biblioteca digital gratuita</title>
-<meta name="description" content="LIBRARY: biblioteca digital gratuita com livros de estudo para o Enem e vestibulares. Escolha um livro na estante e comece a estudar.">
-<meta property="og:title" content="LIBRARY — Biblioteca digital gratuita">
-<meta property="og:description" content="Uma biblioteca viva na web, gratuita para todos os estudantes.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LIBRARY — Biblioteca digital gratuita em 3D</title>
+<meta name="description" content="LIBRARY: biblioteca digital gratuita em 3D. Caminhe entre as estantes, pegue um livro e estude para o Enem de graça.">
+<meta property="og:title" content="LIBRARY — Biblioteca digital gratuita em 3D">
+<meta property="og:description" content="Uma biblioteca viva na web: caminhe entre as estantes e pegue um livro para ler.">
 <meta property="og:type" content="website">
 <style>
-:root{--parede:#18211f;--m1:#8a5d3a;--m2:#6a452a;--m3:#4a2f1c;--fundo:#2b1c12;--ouro:#e0b85c;--creme:#f1e6cc}
-*{box-sizing:border-box}
-html{background:var(--parede)}
-body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0,#24322f,var(--parede) 70%);color:var(--creme);font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;padding:calc(env(safe-area-inset-top,0px) + 20px) 14px calc(env(safe-area-inset-bottom,0px) + 30px)}
-header{text-align:center;margin:8px auto 22px;max-width:640px}
-h1{margin:0;font-size:2.2rem;letter-spacing:.08em;color:var(--ouro)}
-header p{margin:.4em 0 0;opacity:.85}
-#estante{max-width:760px;margin:0 auto;border:12px solid var(--m2);border-image:linear-gradient(90deg,var(--m3),var(--m1),var(--m3)) 1;background:var(--fundo);box-shadow:0 18px 40px rgba(0,0,0,.55)}
-.serie{padding-top:12px}
-.placa{display:inline-block;margin:0 0 8px 14px;padding:3px 14px;background:linear-gradient(#e4c47a,#b8923f);color:#2a1d0c;font-size:.9rem;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.5)}
-.prateleira{background:repeating-linear-gradient(90deg,#2b1c12 0 3px,#301f14 3px 8px)}
-.livros{display:flex;align-items:flex-end;gap:4px;padding:0 10px;min-height:224px}
-.tabua{height:16px;background:linear-gradient(var(--m1),var(--m2) 45%,var(--m3));box-shadow:0 10px 14px -6px rgba(0,0,0,.65)}
-.livro{display:flex;align-items:center;justify-content:center;width:var(--w);height:var(--h);flex:none;position:relative;padding:0;border:0;border-radius:2px 2px 0 0;font:inherit;color:var(--t);text-decoration:none;cursor:pointer;background:linear-gradient(90deg,rgba(0,0,0,.3),transparent 18%,transparent 78%,rgba(0,0,0,.28)),var(--c);box-shadow:2px 0 4px rgba(0,0,0,.45);transition:transform .25s}
-.livro::before,.livro::after{content:"";position:absolute;left:0;right:0;height:3px;background:var(--t);opacity:.8}
-.livro::before{top:12px}
-.livro::after{bottom:12px}
-.titulo{writing-mode:vertical-rl;transform:rotate(180deg);font-size:15px;font-weight:700;letter-spacing:.08em;white-space:nowrap;max-height:calc(var(--h) - 44px);overflow:hidden;text-overflow:ellipsis}
-.livro:hover,.livro:focus-visible{transform:translateY(-12px)}
-.livro:focus-visible{outline:2px solid var(--ouro);outline-offset:2px}
-.livro.sai{transform:translateY(-16px) scale(1.14);z-index:2}
-.livro.em-breve{opacity:.5;filter:saturate(.6)}
-#aviso{position:fixed;left:50%;bottom:24px;transform:translate(-50%,40px);opacity:0;background:#0d1312;border:1px solid var(--ouro);color:var(--creme);padding:10px 18px;border-radius:8px;transition:.3s;pointer-events:none}
+html,body{margin:0;height:100%;overflow:hidden;background:#101615;color:#f1e6cc;font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+#titulo{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);left:0;right:0;text-align:center;pointer-events:none;letter-spacing:.18em;color:#e0b85c;font-size:1.15rem;text-shadow:0 2px 6px #000}
+#simples{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;color:#cdd8d4;font-size:.8rem;opacity:.8}
+#hud{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);display:flex;justify-content:center;align-items:center;gap:10px;padding:0 10px}
+#hud button{height:46px;min-width:46px;padding:0 14px;border-radius:23px;border:1px solid rgba(255,255,255,.28);background:rgba(10,16,15,.72);color:#f1e6cc;font:inherit;font-size:1rem;cursor:pointer}
+#hud button:disabled{opacity:.3}
+#hud button:focus-visible,#fechar:focus-visible{outline:2px solid #e0b85c;outline-offset:2px}
+#ind{min-width:150px;text-align:center;font-size:.9rem;text-shadow:0 1px 4px #000}
+#aviso{position:fixed;left:50%;bottom:90px;transform:translate(-50%,30px);opacity:0;max-width:88vw;text-align:center;background:#0d1312;border:1px solid #e0b85c;padding:10px 16px;border-radius:8px;transition:.3s;pointer-events:none}
 #aviso.on{transform:translate(-50%,0);opacity:1}
-footer{text-align:center;margin-top:22px;font-size:.9rem;opacity:.7}
-@media (prefers-reduced-motion:reduce){.livro,#aviso{transition:none}}
+#leitor{position:fixed;inset:0;display:none;background:#0d1312;z-index:20}
+#leitor.on{display:block}
+#ifr{position:absolute;inset:0;width:100%;height:100%;border:0}
+#fechar{position:absolute;top:calc(env(safe-area-inset-top,0px) + 10px);right:10px;z-index:2;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(10,16,15,.8);color:#f1e6cc;font-size:1.2rem;cursor:pointer}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 </head>
 <body>
-<header>
-<h1>LIBRARY</h1>
-<p>Biblioteca gratuita de estudos. Toque em um livro para abrir.</p>
-</header>
-<main id="estante" aria-label="Estante de livros"></main>
-<noscript><p style="text-align:center"><a href="enem/" style="color:#e0b85c">Abrir o livro do Enem</a></p></noscript>
-<footer id="contagem"></footer>
+<canvas id="c" aria-label="Biblioteca em 3D"></canvas>
+<div id="titulo">LIBRARY</div>
+<a id="simples" href="estante.html">Modo simples</a>
+<nav class="sr" aria-label="Livros"><a href="enem/">Livro do Enem: preparatório gratuito</a> <a href="estante.html">Estante simples</a></nav>
+<div id="hud">
+<button id="ant" aria-label="Estante anterior">‹</button>
+<span id="ind"></span>
+<button id="prox" aria-label="Próxima estante">›</button>
+<button id="sal" aria-label="Voltar ao salão">Salão</button>
+</div>
 <div id="aviso" role="status"></div>
+<div id="leitor"><button id="fechar" aria-label="Devolver o livro à estante">✕</button><iframe id="ifr" title="Livro aberto"></iframe></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="livros.js"></script>
 <script>
 (()=>{
-const est=document.getElementById('estante'),aviso=document.getElementById('aviso');
-const GAP=4;
+if(typeof THREE==='undefined'||typeof LIVROS==='undefined'){location.replace('estante.html');return}
+const $=id=>document.getElementById(id);
+const cv=$('c'),aviso=$('aviso'),leitor=$('leitor'),ifr=$('ifr');
+let renderer;
+try{renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true})}catch(e){location.replace('estante.html');return}
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+
+const HALL_W=6,CASE_W=2.4,CASE_H=2.6,CASE_D=.45,SHELVES=5,GAP_Z=2.9,MIN_CASES=8;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+function ctex(W,H,fn){const c=document.createElement('canvas');c.width=W;c.height=H;fn(c.getContext('2d'),W,H);const t=new THREE.CanvasTexture(c);t.anisotropy=4;return t}
 let tm;
-function avisar(t){aviso.textContent=t;aviso.classList.add('on');clearTimeout(tm);tm=setTimeout(()=>aviso.classList.remove('on'),2200)}
-function mkLivro(l){
-  const c=PALETA[l.cor]||PALETA.grafite;
-  const w=TAMANHOS.espessura[l.espessura]||46,h=TAMANHOS.altura[l.altura]||180;
-  const ok=l.status==='disponivel';
-  const e=document.createElement(ok?'a':'button');
-  e.className='livro'+(ok?'':' em-breve');
-  e.style.cssText='--c:'+c.capa+';--t:'+c.texto+';--w:'+w+'px;--h:'+h+'px';
-  e.title=l.descricao||l.titulo;
-  e.setAttribute('aria-label',l.titulo+(ok?'':' (em breve)'));
-  e.innerHTML='<span class="titulo"></span>';
-  e.firstChild.textContent=l.titulo;
-  if(ok){
-    e.href=l.pasta+'/';
-    e.addEventListener('click',ev=>{ev.preventDefault();e.classList.add('sai');setTimeout(()=>{location.href=e.href},300)});
-  }else e.addEventListener('click',()=>avisar(l.titulo+': em breve'));
-  return {el:e,w};
-}
-function render(){
-  est.innerHTML='';
-  const disp=est.clientWidth-24-20;
-  const series=[];
-  LIVROS.forEach(l=>{let s=series.find(x=>x.nome===l.serie);if(!s){s={nome:l.serie,itens:[]};series.push(s)}s.itens.push(l)});
-  series.forEach(s=>{
-    const sec=document.createElement('section');sec.className='serie';
-    const p=document.createElement('div');p.className='placa';p.textContent=s.nome;sec.append(p);
-    let linha=null,x=0;
-    s.itens.forEach(l=>{
-      const b=mkLivro(l);
-      if(!linha||x+b.w>disp){
-        const pr=document.createElement('div');pr.className='prateleira';
-        linha=document.createElement('div');linha.className='livros';
-        pr.append(linha);
-        const tb=document.createElement('div');tb.className='tabua';
-        sec.append(pr,tb);x=0;
-      }
-      linha.append(b.el);x+=b.w+GAP;
-    });
-    est.append(sec);
+function avisar(t,ms){aviso.textContent=t;aviso.classList.add('on');clearTimeout(tm);tm=setTimeout(()=>aviso.classList.remove('on'),ms||2200)}
+
+/* cena */
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x101615);
+scene.fog=new THREE.Fog(0x101615,7,24);
+const camera=new THREE.PerspectiveCamera(60,1,.05,60);
+camera.rotation.order='YXZ';
+scene.add(camera);
+scene.add(new THREE.AmbientLight(0xfff0d8,.8));
+const sun=new THREE.DirectionalLight(0xffe9c0,.45);sun.position.set(2,4,3);scene.add(sun);
+camera.add(new THREE.PointLight(0xffd9a0,.9,10));
+
+/* distribuição dos livros: cada série começa numa estante nova e
+   passa para outra prateleira (e outra estante) quando não cabe mais */
+const inner=CASE_W-.16,x0=-inner/2;
+const place=[],info=[];
+let ci=0;
+[...new Set(LIVROS.map(l=>l.serie))].forEach(s=>{
+  let row=0,x=0;info[ci]={serie:s};
+  LIVROS.filter(l=>l.serie===s).forEach(l=>{
+    const w=(TAMANHOS.espessura[l.espessura]||46)*.0016;
+    if(x+w>inner){row++;x=0}
+    if(row>=SHELVES){ci++;row=0;x=0;info[ci]={serie:s}}
+    place.push({l,ci,row,x,w});x+=w+.006;
   });
-  const n=LIVROS.filter(l=>l.status==='disponivel').length;
-  document.getElementById('contagem').textContent=n+(n===1?' livro disponível':' livros disponíveis')+' na estante';
+  ci++;
+});
+const NC=Math.max(MIN_CASES,ci),K=Math.ceil(NC/2);
+
+/* estantes */
+const woodM=new THREE.MeshLambertMaterial({color:0x6a452a});
+const darkM=new THREE.MeshLambertMaterial({color:0x2b1c12});
+function box(w,h,d,m,x,y,z,g){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);g.add(o);return o}
+function mkCase(i){
+  const g=new THREE.Group();
+  box(CASE_W,CASE_H,.04,darkM,0,CASE_H/2,-CASE_D/2+.02,g);
+  box(.06,CASE_H,CASE_D,woodM,-(CASE_W/2-.03),CASE_H/2,0,g);
+  box(.06,CASE_H,CASE_D,woodM,CASE_W/2-.03,CASE_H/2,0,g);
+  for(let r=0;r<=SHELVES;r++)box(CASE_W,.05,CASE_D,woodM,0,r<SHELVES?.1+r*.5:CASE_H-.03,0,g);
+  if(info[i]&&info[i].serie){
+    const t=ctex(512,96,(c,W,H)=>{const gr=c.createLinearGradient(0,0,0,H);gr.addColorStop(0,'#e4c47a');gr.addColorStop(1,'#b8923f');c.fillStyle=gr;c.fillRect(0,0,W,H);c.fillStyle='#2a1d0c';c.font='bold 44px Georgia,serif';c.textAlign='center';c.textBaseline='middle';c.fillText(info[i].serie.slice(0,18),W/2,H/2+2)});
+    const p=new THREE.Mesh(new THREE.PlaneGeometry(1.3,.24),new THREE.MeshBasicMaterial({map:t}));
+    p.position.set(0,CASE_H+.14,CASE_D/2+.001);g.add(p);
+  }
+  return g;
 }
-let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(render,150)});
-render();
+const cases=[],caseParts=[],books=[];
+for(let i=0;i<NC;i++){
+  const g=mkCase(i),side=i%2,k=i>>1;
+  g.position.set(side?HALL_W/2-CASE_D/2:-(HALL_W/2-CASE_D/2),0,-k*GAP_Z);
+  g.rotation.y=side?-Math.PI/2:Math.PI/2;
+  scene.add(g);cases.push(g);
+  g.children.forEach(m=>{m.userData.stop=i+1;caseParts.push(m)});
+}
+
+/* livros */
+function mkBook(l){
+  const c=PALETA[l.cor]||PALETA.grafite;
+  const w=(TAMANHOS.espessura[l.espessura]||46)*.0016,h=(TAMANHOS.altura[l.altura]||180)*.002,d=.3;
+  const spine=ctex(64,256,(g,W,H)=>{g.fillStyle=c.capa;g.fillRect(0,0,W,H);g.fillStyle=c.texto;g.fillRect(0,20,W,5);g.fillRect(0,H-25,W,5);g.save();g.translate(W/2,H/2);g.rotate(Math.PI/2);g.font='bold 26px Georgia,serif';g.textAlign='center';g.textBaseline='middle';g.fillText(l.titulo.slice(0,14),0,0);g.restore()});
+  const cover=ctex(256,360,(g,W,H)=>{g.fillStyle=c.capa;g.fillRect(0,0,W,H);g.strokeStyle=c.texto;g.lineWidth=2;g.strokeRect(18,18,W-36,H-36);g.fillStyle=c.texto;g.textAlign='center';g.textBaseline='middle';let s=40;do{g.font='bold '+s+'px Georgia,serif';s-=2}while(g.measureText(l.titulo).width>W-70&&s>12);g.fillText(l.titulo,W/2,H/2-10);g.font='16px Georgia,serif';g.fillText('LIBRARY',W/2,H/2+34)});
+  const pg=new THREE.MeshLambertMaterial({color:0xf3ecd8});
+  const mats=[new THREE.MeshLambertMaterial({map:cover}),new THREE.MeshLambertMaterial({color:c.capa}),pg,pg,new THREE.MeshLambertMaterial({map:spine}),pg];
+  const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mats);
+  m.userData.h=h;
+  return m;
+}
+place.forEach(p=>{
+  const m=mkBook(p.l);
+  m.position.set(x0+p.x+p.w/2,.1+p.row*.5+.025+m.userData.h/2,.02);
+  m.userData.home=cases[p.ci];m.userData.l=p.l;
+  cases[p.ci].add(m);books.push(m);
+});
+
+/* salão */
+const zFar=-(K-1)*GAP_Z-2.4,zNear=6.4,LEN=zNear-zFar,cz=(zNear+zFar)/2,HH=3.4;
+const wood=ctex(256,256,(g,W,H)=>{for(let i=0;i<8;i++){g.fillStyle=i%2?'#7a5232':'#6d4a2e';g.fillRect(0,i*32,W,32);g.fillStyle='rgba(0,0,0,.25)';g.fillRect(0,i*32,W,2)}});
+wood.wrapS=wood.wrapT=THREE.RepeatWrapping;wood.repeat.set(HALL_W/2,LEN/2);
+function plane(w,h,m,x,y,z,rx,ry){const p=new THREE.Mesh(new THREE.PlaneGeometry(w,h),m);p.position.set(x,y,z);p.rotation.set(rx||0,ry||0,0);scene.add(p);return p}
+const wallM=new THREE.MeshLambertMaterial({color:0x2a3b37});
+plane(HALL_W,LEN,new THREE.MeshLambertMaterial({map:wood}),0,0,cz,-Math.PI/2);
+plane(HALL_W,LEN,new THREE.MeshLambertMaterial({color:0x1a2220}),0,HH,cz,Math.PI/2);
+plane(LEN,HH,wallM,-HALL_W/2,HH/2,cz,0,Math.PI/2);
+plane(LEN,HH,wallM,HALL_W/2,HH/2,cz,0,-Math.PI/2);
+plane(HALL_W,HH,wallM,0,HH/2,zFar,0,0);
+plane(HALL_W,HH,wallM,0,HH/2,zNear,0,Math.PI);
+plane(2.4,LEN-1,new THREE.MeshLambertMaterial({color:0xb8923f}),0,.01,cz,-Math.PI/2);
+plane(2.1,LEN-1.3,new THREE.MeshLambertMaterial({color:0x6b2737}),0,.012,cz,-Math.PI/2);
+const letreiro=ctex(1024,256,(g,W,H)=>{g.fillStyle='#e0b85c';g.textAlign='center';g.textBaseline='middle';g.font='bold 120px Georgia,serif';g.fillText('LIBRARY',W/2,100);g.font='40px Georgia,serif';g.fillStyle='#f1e6cc';g.fillText('Biblioteca gratuita de estudos',W/2,200)});
+plane(3.2,.8,new THREE.MeshBasicMaterial({map:letreiro,transparent:true}),0,2.0,zFar+.01);
+const lampM=new THREE.MeshBasicMaterial({color:0xffe3a0});
+for(let k=0;k<K;k++){
+  const l=new THREE.Mesh(new THREE.SphereGeometry(.13,12,8),lampM);l.position.set(0,2.95,-k*GAP_Z);scene.add(l);
+  const f=new THREE.Mesh(new THREE.CylinderGeometry(.01,.01,.45,4),darkM);f.position.set(0,3.2,-k*GAP_Z);scene.add(f);
+}
+
+/* câmera e navegação */
+let stop=0,dyaw=0,dpitch=0,tw=null,bt=null,busy=false,held=null;
+function pose(i){
+  if(i===0)return{x:0,y:1.6,z:5,yaw:0,pitch:-.04};
+  const c=i-1,side=c%2,k=c>>1;
+  return{x:side?.55:-.55,y:1.5,z:-k*GAP_Z,yaw:side?-Math.PI/2:Math.PI/2,pitch:0};
+}
+const cam=Object.assign({},pose(0));
+function hud(){
+  $('ind').textContent=stop===0?'Salão':'Estante '+stop+' de '+NC+' · '+((info[stop-1]&&info[stop-1].serie)||'vazia');
+  $('ant').disabled=stop<=0;$('prox').disabled=stop>=NC;$('sal').disabled=stop===0;
+}
+function goTo(i){
+  if(busy)return;
+  stop=clamp(i,0,NC);
+  const to=pose(stop),d=((to.yaw-cam.yaw+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI;
+  tw={t:performance.now(),d:1100,f:Object.assign({},cam),to,dy:d,dyaw0:dyaw,dp0:dpitch};
+  hud();
+}
+function anim(m,p0,p1,q0,q1,s0,s1,dur,fin){bt={m,t:performance.now(),d:dur,p0,p1,q0,q1,s0,s1,fin}}
+function openBook(m){
+  if(busy)return;
+  const l=m.userData.l;
+  if(l.status!=='disponivel'){avisar(l.titulo+': em breve');return}
+  busy=true;
+  const p0=new THREE.Vector3(),q0=new THREE.Quaternion(),s0=new THREE.Vector3();
+  m.getWorldPosition(p0);m.getWorldQuaternion(q0);m.getWorldScale(s0);
+  scene.attach(m);
+  const dir=new THREE.Vector3();camera.getWorldDirection(dir);
+  const p1=camera.position.clone().addScaledVector(dir,.95);
+  const q1=new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(1,0,0),dir.clone().negate());
+  held={m,p0,q0,s0};
+  anim(m,p0.clone(),p1,q0.clone(),q1,s0.clone(),new THREE.Vector3(2.3,2.3,2.3),850,()=>setTimeout(()=>{ifr.src=l.pasta+'/';leitor.classList.add('on')},300));
+}
+function closeBook(){
+  if(!leitor.classList.contains('on')||!held)return;
+  leitor.classList.remove('on');ifr.src='about:blank';
+  const h=held;
+  anim(h.m,h.m.position.clone(),h.p0,h.m.quaternion.clone(),h.q0,h.m.scale.clone(),h.s0,800,()=>{h.m.userData.home.attach(h.m);held=null;busy=false});
+}
+
+/* toque e arrasto */
+const ray=new THREE.Raycaster(),v2=new THREE.Vector2();
+function pick(x,y){
+  v2.set(x/innerWidth*2-1,-(y/innerHeight)*2+1);ray.setFromCamera(v2,camera);
+  if(stop===0){const h=ray.intersectObjects(caseParts,false)[0];if(h)goTo(h.object.userData.stop);return}
+  const h=ray.intersectObjects(books,false)[0];
+  if(h)openBook(h.object);
+}
+let pd=null;
+cv.addEventListener('pointerdown',e=>{if(busy)return;pd={lx:e.clientX,ly:e.clientY,t:performance.now(),m:0};cv.setPointerCapture(e.pointerId)});
+cv.addEventListener('pointermove',e=>{
+  if(!pd)return;
+  const dx=e.clientX-pd.lx,dy=e.clientY-pd.ly;pd.lx=e.clientX;pd.ly=e.clientY;pd.m+=Math.abs(dx)+Math.abs(dy);
+  if(pd.m>8){dyaw=clamp(dyaw+dx*.005,-1.4,1.4);dpitch=clamp(dpitch+dy*.005,-.6,.6)}
+});
+cv.addEventListener('pointerup',e=>{const p=pd;pd=null;if(p&&!busy&&p.m<8&&performance.now()-p.t<500)pick(e.clientX,e.clientY)});
+cv.addEventListener('pointercancel',()=>{pd=null});
+$('ant').onclick=()=>goTo(stop-1);
+$('prox').onclick=()=>goTo(stop+1);
+$('sal').onclick=()=>goTo(0);
+$('fechar').onclick=closeBook;
+addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeBook();
+  if(!busy){if(e.key==='ArrowRight')goTo(stop+1);if(e.key==='ArrowLeft')goTo(stop-1)}
+});
+
+/* tela */
+function resize(){
+  const w=innerWidth,h=innerHeight;
+  renderer.setSize(w,h,false);
+  camera.aspect=w/h;camera.fov=w/h<1?74:58;camera.updateProjectionMatrix();
+}
+addEventListener('resize',resize);
+resize();hud();
+
+function loop(now){
+  requestAnimationFrame(loop);
+  if(tw){
+    const k=ease(Math.min(1,(now-tw.t)/tw.d));
+    cam.x=tw.f.x+(tw.to.x-tw.f.x)*k;cam.y=tw.f.y+(tw.to.y-tw.f.y)*k;cam.z=tw.f.z+(tw.to.z-tw.f.z)*k;
+    cam.yaw=tw.f.yaw+tw.dy*k;cam.pitch=tw.f.pitch+(tw.to.pitch-tw.f.pitch)*k;
+    dyaw=tw.dyaw0*(1-k);dpitch=tw.dp0*(1-k);
+    if(k>=1)tw=null;
+  }
+  camera.position.set(cam.x,cam.y,cam.z);
+  camera.rotation.set(cam.pitch+dpitch,cam.yaw+dyaw,0);
+  if(bt){
+    const k=ease(Math.min(1,(now-bt.t)/bt.d));
+    bt.m.position.lerpVectors(bt.p0,bt.p1,k);
+    bt.m.quaternion.slerpQuaternions(bt.q0,bt.q1,k);
+    bt.m.scale.lerpVectors(bt.s0,bt.s1,k);
+    if(k>=1){const f=bt.fin;bt=null;if(f)f()}
+  }
+  renderer.render(scene,camera);
+}
+requestAnimationFrame(loop);
+setTimeout(()=>avisar('Arraste para olhar. Toque numa estante ou use ‹ › para chegar perto.',4500),700);
 })();
 </script>
 </body>

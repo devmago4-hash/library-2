@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIBRARY — Biblioteca digital gratuita</title>
+<meta name="description" content="LIBRARY: biblioteca digital gratuita com livros de estudo para o Enem e vestibulares. Escolha um livro na estante e comece a estudar.">
+<meta property="og:title" content="LIBRARY — Biblioteca digital gratuita">
+<meta property="og:description" content="Uma biblioteca viva na web, gratuita para todos os estudantes.">
+<meta property="og:type" content="website">
+<style>
+:root{--parede:#18211f;--m1:#8a5d3a;--m2:#6a452a;--m3:#4a2f1c;--fundo:#2b1c12;--ouro:#e0b85c;--creme:#f1e6cc}
+*{box-sizing:border-box}
+html{background:var(--parede)}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0,#24322f,var(--parede) 70%);color:var(--creme);font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;padding:calc(env(safe-area-inset-top,0px) + 20px) 14px calc(env(safe-area-inset-bottom,0px) + 30px)}
+header{text-align:center;margin:8px auto 22px;max-width:640px}
+h1{margin:0;font-size:2.2rem;letter-spacing:.08em;color:var(--ouro)}
+header p{margin:.4em 0 0;opacity:.85}
+#estante{max-width:760px;margin:0 auto;border:12px solid var(--m2);border-image:linear-gradient(90deg,var(--m3),var(--m1),var(--m3)) 1;background:var(--fundo);box-shadow:0 18px 40px rgba(0,0,0,.55)}
+.serie{padding-top:12px}
+.placa{display:inline-block;margin:0 0 8px 14px;padding:3px 14px;background:linear-gradient(#e4c47a,#b8923f);color:#2a1d0c;font-size:.9rem;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.5)}
+.prateleira{background:repeating-linear-gradient(90deg,#2b1c12 0 3px,#301f14 3px 8px)}
+.livros{display:flex;align-items:flex-end;gap:4px;padding:0 10px;min-height:224px}
+.tabua{height:16px;background:linear-gradient(var(--m1),var(--m2) 45%,var(--m3));box-shadow:0 10px 14px -6px rgba(0,0,0,.65)}
+.livro{display:flex;align-items:center;justify-content:center;width:var(--w);height:var(--h);flex:none;position:relative;padding:0;border:0;border-radius:2px 2px 0 0;font:inherit;color:var(--t);text-decoration:none;cursor:pointer;background:linear-gradient(90deg,rgba(0,0,0,.3),transparent 18%,transparent 78%,rgba(0,0,0,.28)),var(--c);box-shadow:2px 0 4px rgba(0,0,0,.45);transition:transform .25s}
+.livro::before,.livro::after{content:"";position:absolute;left:0;right:0;height:3px;background:var(--t);opacity:.8}
+.livro::before{top:12px}
+.livro::after{bottom:12px}
+.titulo{writing-mode:vertical-rl;transform:rotate(180deg);font-size:15px;font-weight:700;letter-spacing:.08em;white-space:nowrap;max-height:calc(var(--h) - 44px);overflow:hidden;text-overflow:ellipsis}
+.livro:hover,.livro:focus-visible{transform:translateY(-12px)}
+.livro:focus-visible{outline:2px solid var(--ouro);outline-offset:2px}
+.livro.sai{transform:translateY(-16px) scale(1.14);z-index:2}
+.livro.em-breve{opacity:.5;filter:saturate(.6)}
+#aviso{position:fixed;left:50%;bottom:24px;transform:translate(-50%,40px);opacity:0;background:#0d1312;border:1px solid var(--ouro);color:var(--creme);padding:10px 18px;border-radius:8px;transition:.3s;pointer-events:none}
+#aviso.on{transform:translate(-50%,0);opacity:1}
+footer{text-align:center;margin-top:22px;font-size:.9rem;opacity:.7}
+@media (prefers-reduced-motion:reduce){.livro,#aviso{transition:none}}
+</style>
+</head>
+<body>
+<header>
+<h1>LIBRARY</h1>
+<p>Biblioteca gratuita de estudos. Toque em um livro para abrir.</p>
+</header>
+<main id="estante" aria-label="Estante de livros"></main>
+<noscript><p style="text-align:center"><a href="enem/" style="color:#e0b85c">Abrir o livro do Enem</a></p></noscript>
+<footer id="contagem"></footer>
+<div id="aviso" role="status"></div>
+
+<script src="livros.js"></script>
+<script>
+(()=>{
+const est=document.getElementById('estante'),aviso=document.getElementById('aviso');
+const GAP=4;
+let tm;
+function avisar(t){aviso.textContent=t;aviso.classList.add('on');clearTimeout(tm);tm=setTimeout(()=>aviso.classList.remove('on'),2200)}
+function mkLivro(l){
+  const c=PALETA[l.cor]||PALETA.grafite;
+  const w=TAMANHOS.espessura[l.espessura]||46,h=TAMANHOS.altura[l.altura]||180;
+  const ok=l.status==='disponivel';
+  const e=document.createElement(ok?'a':'button');
+  e.className='livro'+(ok?'':' em-breve');
+  e.style.cssText='--c:'+c.capa+';--t:'+c.texto+';--w:'+w+'px;--h:'+h+'px';
+  e.title=l.descricao||l.titulo;
+  e.setAttribute('aria-label',l.titulo+(ok?'':' (em breve)'));
+  e.innerHTML='<span class="titulo"></span>';
+  e.firstChild.textContent=l.titulo;
+  if(ok){
+    e.href=l.pasta+'/';
+    e.addEventListener('click',ev=>{ev.preventDefault();e.classList.add('sai');setTimeout(()=>{location.href=e.href},300)});
+  }else e.addEventListener('click',()=>avisar(l.titulo+': em breve'));
+  return {el:e,w};
+}
+function render(){
+  est.innerHTML='';
+  const disp=est.clientWidth-24-20;
+  const series=[];
+  LIVROS.forEach(l=>{let s=series.find(x=>x.nome===l.serie);if(!s){s={nome:l.serie,itens:[]};series.push(s)}s.itens.push(l)});
+  series.forEach(s=>{
+    const sec=document.createElement('section');sec.className='serie';
+    const p=document.createElement('div');p.className='placa';p.textContent=s.nome;sec.append(p);
+    let linha=null,x=0;
+    s.itens.forEach(l=>{
+      const b=mkLivro(l);
+      if(!linha||x+b.w>disp){
+        const pr=document.createElement('div');pr.className='prateleira';
+        linha=document.createElement('div');linha.className='livros';
+        pr.append(linha);
+        const tb=document.createElement('div');tb.className='tabua';
+        sec.append(pr,tb);x=0;
+      }
+      linha.append(b.el);x+=b.w+GAP;
+    });
+    est.append(sec);
+  });
+  const n=LIVROS.filter(l=>l.status==='disponivel').length;
+  document.getElementById('contagem').textContent=n+(n===1?' livro disponível':' livros disponíveis')+' na estante';
+}
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(render,150)});
+render();
+})();
+</script>
+</body>
+</html>
