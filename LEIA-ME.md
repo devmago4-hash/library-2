@@ -73,3 +73,13 @@ Fonte: serifada do sistema (`"Iowan Old Style", "Palatino Linotype", Palatino, G
 ## Publicação
 
 GitHub Pages: *Settings → Pages → branch `main`, pasta `/root`*. Depois cadastre o site no Google Search Console.
+
+## Acervo digital
+
+A página `acervo/index.html` lista fontes abertas, lidas do catálogo `acervo.js` (copie um bloco e preencha). Regras:
+
+- Só entra fonte com licença aberta (Creative Commons), domínio público, documento oficial público ou **link** para o site original.
+- Preencha sempre `licenca` e `credito`, conferindo no site da fonte.
+- Só use `embed` (conteúdo dentro do nosso site) se a fonte permite incorporar. Hoje: simulações PhET.
+- Nunca copie texto de sites comerciais (Brasil Escola, cursinhos, etc.). Isso viola direitos autorais.
+- Licenças "CompartilhaIgual" (CC BY-SA, BY-NC-SA): se copiarmos e adaptarmos o texto, o que sair disso precisa ter a mesma licença e citar o autor. Por isso, preferimos linkar.
