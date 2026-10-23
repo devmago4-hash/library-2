@@ -10,6 +10,11 @@ LIVRO.arquivos = [
   "60-mat-combinatoria.js",
   "100-fis-cinematica.js",
   "110-fis-dinamica.js",
+  "120-fis-energia.js",
+  "130-fis-hidrostatica.js",
+  "140-fis-termologia.js",
+  "150-fis-ondas-optica.js",
+  "160-fis-eletricidade.js",
   "200-quim-materia-misturas.js",
   "210-quim-atomo-ligacoes.js",
   "220-quim-inorganica-reacoes.js",
@@ -22,7 +27,6 @@ LIVRO.arquivos = [
 
 /* Assuntos planejados (aparecem na página "O que vem por aí"). */
 LIVRO.plano = [
-  { area: "Física", itens: ["Energia, trabalho e potência", "Hidrostática", "Termologia", "Ondas e óptica", "Eletricidade e magnetismo"] },
   { area: "Química", itens: ["Estequiometria e soluções", "Termoquímica, cinética e equilíbrio", "Eletroquímica", "Química orgânica e ambiental"] },
   { area: "Biologia", itens: ["Microbiologia e saúde pública"] },
   { area: "Ciências Humanas", itens: ["História do Brasil", "Geografia e meio ambiente", "Filosofia e sociologia"] },
