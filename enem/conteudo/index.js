@@ -7,12 +7,24 @@ LIVRO.arquivos = [
   "30-mat-estatistica-probabilidade.js",
   "40-mat-geometria.js",
   "50-mat-funcoes.js",
-  "60-mat-combinatoria.js"
+  "60-mat-combinatoria.js",
+  "100-fis-cinematica.js",
+  "110-fis-dinamica.js",
+  "200-quim-materia-misturas.js",
+  "210-quim-atomo-ligacoes.js",
+  "220-quim-inorganica-reacoes.js",
+  "300-bio-citologia-metabolismo.js",
+  "310-bio-genetica.js",
+  "320-bio-evolucao-classificacao.js",
+  "330-bio-ecologia-ambiente.js",
+  "340-bio-fisiologia-humana.js"
 ];
 
 /* Assuntos planejados (aparecem na página "O que vem por aí"). */
 LIVRO.plano = [
-  { area: "Ciências da Natureza", itens: ["Cinemática e dinâmica", "Eletricidade", "Química: misturas e estequiometria", "Biologia: genética e ecologia"] },
+  { area: "Física", itens: ["Energia, trabalho e potência", "Hidrostática", "Termologia", "Ondas e óptica", "Eletricidade e magnetismo"] },
+  { area: "Química", itens: ["Estequiometria e soluções", "Termoquímica, cinética e equilíbrio", "Eletroquímica", "Química orgânica e ambiental"] },
+  { area: "Biologia", itens: ["Microbiologia e saúde pública"] },
   { area: "Ciências Humanas", itens: ["História do Brasil", "Geografia e meio ambiente", "Filosofia e sociologia"] },
   { area: "Linguagens", itens: ["Interpretação de texto", "Gêneros textuais", "Gramática aplicada", "Literatura"] },
   { area: "Redação", itens: ["Estrutura da dissertação", "Repertório sociocultural", "Redações nota 1000 comentadas"] }
