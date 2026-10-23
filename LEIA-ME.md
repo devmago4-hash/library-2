@@ -64,6 +64,10 @@ Fonte: serifada do sistema (`"Iowan Old Style", "Palatino Linotype", Palatino, G
 - Textos curtos: cerca de 600 caracteres por página, para caber sem rolar.
 - Tudo em um único `index.html`, sem imagens nem scripts externos.
 
+## Livro 3D (girar na mão)
+
+O motor de `enem/index.html` já tem o modo 3D: o botão **Girar** pega o livro e o vira em qualquer direção (arraste, solte e ele continua girando um pouco), e o botão ↺ volta à posição inicial. Todo livro novo herda isso ao copiar `enem/index.html`. Ao copiar, troque só os textos de título, a cor da capa (`--capa`), o nome na capa e a chave `library-<livro>-pg` do localStorage. Exemplo pronto: `harvard/index.html`.
+
 ## Conteúdo e direitos autorais
 
 - Use apenas texto próprio, material de licença livre (Creative Commons) ou provas oficiais públicas.

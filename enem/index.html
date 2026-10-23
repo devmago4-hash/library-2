@@ -15,6 +15,9 @@ html,body{height:100%;margin:0;overflow:hidden;background:radial-gradient(ellips
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 #escala{position:absolute;left:50%;top:calc(50% - 34px);width:0;height:0;transform:scale(var(--k))}
 .book{position:absolute;width:var(--bw);height:500px;left:calc(var(--bw)/-2);top:-250px;perspective:2600px;touch-action:none;user-select:none;-webkit-user-select:none;transition:transform .8s cubic-bezier(.4,.1,.2,1)}
+.mundo{position:absolute;inset:0;transform-style:preserve-3d}
+#giro{position:fixed;inset:0;z-index:5;display:none;touch-action:none;cursor:grab;-webkit-user-select:none;user-select:none}
+#giro:active{cursor:grabbing}
 .leaf{position:absolute;top:0;left:var(--lx);width:360px;height:500px;transform-origin:left center;transform-style:preserve-3d}
 .leaf.curva>.face{display:none}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--papel);overflow:hidden;font-size:13.5px;line-height:1.5;box-shadow:0 2px 14px rgba(0,0,0,.35)}
@@ -60,9 +63,10 @@ html,body{height:100%;margin:0;overflow:hidden;background:radial-gradient(ellips
 .foil p{margin:.2em 0;color:#f1dba4}
 .endp{background:#e9e1cc}
 .blank{background:var(--papel)}
-.ui{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);display:flex;justify-content:center;align-items:center;gap:10px;color:#cdd8d4;font-size:15px}
+.ui{z-index:10;position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);display:flex;justify-content:center;align-items:center;gap:10px;color:#cdd8d4;font-size:15px}
 .ui button{height:46px;min-width:46px;padding:0 14px;border-radius:23px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#e6efe9;font:inherit;font-size:20px;cursor:pointer}
-.ui button#sum{font-size:14px}
+.ui button#sum,.ui button#gi,.ui button#rs{font-size:14px}
+.ui button#gi[aria-pressed=true]{background:var(--ouro);color:#2a1d0c;border-color:var(--ouro)}
 .ui button:disabled{opacity:.3}
 .ui button:focus-visible{outline:2px solid var(--ouro);outline-offset:2px}
 #ind{min-width:120px;text-align:center;font-size:14px}
@@ -75,8 +79,9 @@ html,body{height:100%;margin:0;overflow:hidden;background:radial-gradient(ellips
 <a class="voltar" href="../">‹ Biblioteca</a>
 <div id="escala"><div class="book" id="book" aria-label="Livro do Enem"></div></div>
 <div id="carregando">Montando o livro…</div>
+<div id="giro" aria-hidden="true"></div>
 <nav class="ui" aria-label="Navegação do livro">
-<button id="prev" aria-label="Página anterior">‹</button><span id="ind" aria-live="polite"></span><button id="next" aria-label="Próxima página">›</button><button id="sum">Sumário</button>
+<button id="prev" aria-label="Página anterior">‹</button><span id="ind" aria-live="polite"></span><button id="next" aria-label="Próxima página">›</button><button id="sum">Sumário</button><button id="gi" aria-pressed="false" title="Pegar o livro e girar em 3D">Girar</button><button id="rs" aria-label="Voltar o livro à posição inicial" style="display:none">↺</button>
 </nav>
 <script>window.LIVRO={cap:function(){},arquivos:[],plano:[]}</script>
 <script src="conteudo/index.js"></script>
@@ -90,7 +95,8 @@ const CAPS=[];LIVRO.cap=c=>CAPS.push(c);
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 const mk=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
-let PAGES=[],two=true,L=[],ang=[],N=0,cur=0,K=1,anim=null,rigs={},lock=false,dg=null;
+let PAGES=[],two=true,L=[],ang=[],N=0,cur=0,K=1,anim=null,rigs={},lock=false,dg=null,gir=false,rx=0,ry=0,vx=0,vy=0,rg=null,mun=null;
+let ZT=.2;const tf=(i,d)=>'translateZ('+((d>-90?N-i:i)*ZT).toFixed(2)+'px) rotateY('+d+'deg)';
 const mx=()=>two?N:N-1;
 const hard=i=>i===0||i===N-1;
 
@@ -217,16 +223,17 @@ function build(){
   K=Math.max(.3,Math.min(1.3,(innerWidth-20)/(two?2*W:W),(innerHeight-120)/H));
   esc.style.setProperty('--k',K);
   book.style.setProperty('--bw',(two?2*W:W)+'px');book.style.setProperty('--lx',(two?W:0)+'px');
-  book.innerHTML='';L=[];rigs={};N=two?PAGES.length/2:PAGES.length;
+  book.innerHTML='';mun=mk('div','mundo');book.append(mun);L=[];rigs={};N=two?PAGES.length/2:PAGES.length;ZT=30/Math.max(N,1);
   for(let k=0;k<N;k++){
     const e=mk('div','leaf');
     e.append(face(two?2*k:k,'front'),face(two?2*k+1:-1,'back'));
-    book.append(e);L.push(e);
+    mun.append(e);L.push(e);
   }
   cur=clamp(two?Math.ceil(f/2):f,0,mx());
   draw();
 }
-function shift(){book.style.transform=two?'translateX('+(cur===0?-W/2:cur>=N?W/2:0)+'px)':''}
+function rotar(){if(!mun)return;mun.style.transformOrigin=(two?(cur===0?'75%':cur>=N?'25%':'50%'):'50%')+' 50% 15px';mun.style.transform='rotateX('+rx+'deg) rotateY('+ry+'deg)'}
+function shift(){book.style.transform=two?'translateX('+(cur===0?-W/2:cur>=N?W/2:0)+'px)':'';rotar()}
 function hud(){
   const M=PAGES.length,f=two?(cur>=N?M-1:2*cur):cur;
   ind.textContent=two?(cur===0?'Capa':cur>=N?'Contracapa':'Páginas '+(2*cur-1)+' e '+(2*cur)):(f===0?'Capa':f===M-1?'Contracapa':'Página '+f);
@@ -234,7 +241,7 @@ function hud(){
   try{localStorage.setItem('library-enem-pg',f)}catch(e){}
 }
 function draw(){
-  L.forEach((e,i)=>{const a=i<cur?-180:0;ang[i]=a;e.style.transition='none';e.style.transform='rotateY('+a+'deg)';e.style.zIndex=i<cur?i:N-i});
+  L.forEach((e,i)=>{const a=i<cur?-180:0;ang[i]=a;e.style.transition='none';e.style.transform=tf(i,a);e.style.zIndex=i<cur?i:N-i});
   shift();hud();
 }
 function rigOf(i){
@@ -254,7 +261,7 @@ function rigOf(i){
 function startRig(i){if(hard(i)||rigs[i])return;const r=rigOf(i);L[i].classList.add('curva');L[i].appendChild(r.rig);rigs[i]=r}
 function endRig(i){const r=rigs[i];if(!r)return;r.rig.remove();L[i].classList.remove('curva');delete rigs[i]}
 function setRig(i,deg,dir){
-  L[i].style.transform='rotateY('+deg+'deg)';
+  L[i].style.transform=tf(i,deg);
   const r=rigs[i];if(!r)return;
   const b=dir*CURL*Math.sin(Math.PI*clamp(-deg/180,0,1));
   let t=deg;
@@ -289,7 +296,7 @@ function go(t){
   cur=t;lock=true;shift();hud();
   for(let i=Math.min(o,t);i<Math.max(o,t);i++){
     const e=L[i];e.style.transition='transform 1s cubic-bezier(.4,.1,.2,1)';
-    e.style.zIndex=N+5+(t>o?i:N-i);e.style.transform='rotateY('+(i<t?-180:0)+'deg)';
+    e.style.zIndex=N+5+(t>o?i:N-i);e.style.transform=tf(i,i<t?-180:0);
   }
   setTimeout(()=>{lock=false;draw()},1050);
 }
@@ -324,6 +331,16 @@ addEventListener('pointerup',e=>{
   else turn(g.i,g.d>0?0:-180,500,-g.d);
 });
 addEventListener('pointercancel',()=>{const g=dg;dg=null;if(g&&g.d)turn(g.i,g.d>0?0:-180,400,-g.d)});
+/* ---------- girar o livro na mão ---------- */
+const gv=$('giro'),bgi=$('gi'),brs=$('rs');
+function modoGiro(on){gir=on;gv.style.display=on?'block':'none';bgi.setAttribute('aria-pressed',on);bgi.textContent=on?'Folhear':'Girar';brs.style.display=on?'':'none'}
+function inercia(){if(rg||(Math.abs(vx)<.05&&Math.abs(vy)<.05))return;ry+=vx;rx=clamp(rx+vy,-80,80);vx*=.94;vy*=.94;rotar();requestAnimationFrame(inercia)}
+bgi.onclick=()=>modoGiro(!gir);
+brs.onclick=()=>{vx=vy=0;ry=((ry%360)+540)%360-180;rotar();mun.style.transition='transform .5s ease';requestAnimationFrame(()=>{rx=0;ry=0;rotar()});setTimeout(()=>{if(mun)mun.style.transition=''},560)};
+gv.addEventListener('pointerdown',e=>{finish();rg={x:e.clientX,y:e.clientY};vx=vy=0;try{gv.setPointerCapture(e.pointerId)}catch(_){}});
+gv.addEventListener('pointermove',e=>{if(!rg)return;const dx=e.clientX-rg.x,dy=e.clientY-rg.y;rg.x=e.clientX;rg.y=e.clientY;vx=dx*.45;vy=-dy*.45;ry+=vx;rx=clamp(rx+vy,-80,80);rotar()});
+gv.addEventListener('pointerup',()=>{rg=null;inercia()});
+gv.addEventListener('pointercancel',()=>{rg=null});
 bp.onclick=()=>go(cur-1);bn.onclick=()=>go(cur+1);$('sum').onclick=()=>goFace(2);
 addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1)});
 let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(PAGES.length)build()},150)});

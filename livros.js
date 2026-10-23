@@ -44,6 +44,17 @@ const LIVROS = [
     espessura: "grossa",
     status: "disponivel",
     descricao: "Preparatório completo e gratuito para o Enem."
+  },
+  {
+    id: "harvard",
+    titulo: "Harvard",
+    serie: "Universidades globais",
+    pasta: "harvard",
+    cor: "vinho",
+    altura: "m",
+    espessura: "fina",
+    status: "disponivel",
+    descricao: "Guia gratuito de candidatura, SAT e cursos abertos."
   }
   /* MODELO PARA O PRÓXIMO LIVRO (copie, tire os comentários e ponha vírgula acima):
   ,{
